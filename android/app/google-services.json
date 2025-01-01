@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "563108806474",
+    "firebase_url": "https://esp32projectv2-default-rtdb.firebaseio.com",
+    "project_id": "esp32projectv2",
+    "storage_bucket": "esp32projectv2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563108806474:android:09b9c9e0e32d9d28140bb3",
+        "android_client_info": {
+          "package_name": "com.example.newesp32"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWq9Y9cOPUMEyK4BbJTjuDOLYnyxxTWPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563108806474:android:82341e61c5137bbc140bb3",
+        "android_client_info": {
+          "package_name": "com.example.wear_os3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWq9Y9cOPUMEyK4BbJTjuDOLYnyxxTWPI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

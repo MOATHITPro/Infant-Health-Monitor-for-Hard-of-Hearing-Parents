@@ -5,8 +5,8 @@
 #include "arduinoFFT.h"
 
 // بيانات Wi-Fi
-#define WIFI_SSID "Yemen4G-4D5C94"
-#define WIFI_PASSWORD "ZaiYas77Moh#"
+#define WIFI_SSID "MoathAbbas"
+#define WIFI_PASSWORD "12345678"
 
 // بيانات Firebase
 #define API_KEY "AIzaSyDqf8zSPSB-fq0ZAc2Y7-ZVTInSJdJhgOU"
@@ -14,7 +14,7 @@
 #define USER_EMAIL "moath.itpro@gmail.com"
 #define USER_PASSWORD "Moath770937324$"
 
-//  Firebase
+//  Firebasex
 FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
@@ -23,7 +23,7 @@ FirebaseConfig config;
 #define SOUND_SENSOR_PIN 35 // الدبوس الذي يتصل به OUT من MAX4466
 const uint16_t samples = 64; // عدد العينات في كل دورة
 const float samplingFrequency = 1000; // تردد العينة (Hz)
-int sound_threshold = 80; // العتبة التي نعتبر عندها أن الطفل يبكي
+int sound_threshold = 91; // العتبة التي نعتبر عندها أن الطفل يبكي
 
 // مصفوفات لتمثيل البيانات
 float vReal[samples];
@@ -99,13 +99,13 @@ void loop() {
 
   // إذا تجاوز التردد الرئيسي العتبة، يتم اعتبار أن الطفل يبكي
   if (peakFrequency > sound_threshold) {
-    Serial.println("=> Baby is crying");
+    Serial.println("=> Your Child Needs You");
 
     // إرسال البيانات إلى Firebase
     if (Firebase.ready()) {
       String path = "/baby_status/crying";
-      if (Firebase.setString(fbdo, path, "Baby is crying")) {
-        Serial.println("Status sent to Firebase: Baby is crying");
+      if (Firebase.setString(fbdo, path, "Your Child Needs You")) {
+        Serial.println("Status sent to Firebase: Your Child Needs You");
       } else {
         Serial.println("Failed to send status: " + fbdo.errorReason());
       }
