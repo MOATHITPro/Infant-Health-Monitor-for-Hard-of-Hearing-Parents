@@ -8,7 +8,7 @@ class Connecting extends StatefulWidget {
 }
 
 class _ConnectingState extends State<Connecting> {
-  String _message = 'not Connect';
+  String _message = 'Not Connected';
 
   // دالة لتغيير النص عند الضغط على الزر
   void _changeMessage() {
@@ -24,64 +24,82 @@ class _ConnectingState extends State<Connecting> {
 
   @override
   Widget build(BuildContext context) {
-    // استخدام MediaQuery للحصول على حجم الشاشة
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
 
-    // حساب حجم النص بناءً على حجم الشاشة
-    double textSize = screenWidth < 400 ? 16 : 20;
+    double textSize = screenWidth < 400 ? 14 : 18;
 
-    // حساب حجم الزر بناءً على العرض
-    double buttonWidth = screenWidth * 0.6; // الزر سيأخذ 60% من العرض
-    double buttonHeight = 40;
+    double buttonWidth = 100; // تحديد عرض الزر
+    double buttonHeight = 40.0;
 
-    // حساب المسافات بين العناصر بناءً على حجم الشاشة
-    double verticalSpacing =
-        screenHeight * 0.02; // 2% من ارتفاع الشاشة للمسافات بين العناصر
-    double padding = screenWidth * 0.05; // 5% من العرض للحشو
+    double verticalSpacing = screenHeight * 0.02;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wear OS'),
+        title: const Text(
+          'Setting',
+          style:
+              TextStyle(fontSize: 18, color: Color.fromARGB(255, 25, 135, 56)),
+        ),
         centerTitle: true,
-        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromARGB(255, 192, 223, 156),
       ),
+      backgroundColor: const Color(0xFFEEF6DE),
       body: Center(
-        // مركزية المحتوى
         child: Padding(
-          padding: EdgeInsets.all(padding),
+          padding: EdgeInsets.all(screenWidth * 0.05),
           child: Column(
-            mainAxisAlignment:
-                MainAxisAlignment.center, // محاذاة العناصر في الوسط عمودياً
-            crossAxisAlignment:
-                CrossAxisAlignment.center, // محاذاة العناصر في الوسط أفقياً
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(
-                onPressed: _changeMessage,
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(buttonWidth, buttonHeight),
+              // زر الاتصال بأيقونة الواي فاي فقط
+              Container(
+                width: buttonWidth, // عرض الزر
+                height: buttonHeight, // ارتفاع الزر
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 192, 223, 156), // خلفية الزر
+                  borderRadius: BorderRadius.circular(8), // زوايا مستديرة
                 ),
-                child: Text('Connect',
-                    style: TextStyle(fontSize: textSize * textScaleFactor)),
+                child: TextButton(
+                  onPressed: _changeMessage,
+                  child: const Icon(
+                    Icons.wifi, // أيقونة الواي فاي
+                    color: Color.fromARGB(255, 131, 131, 131), // لون الأيقونة
+                  ),
+                ),
               ),
-              SizedBox(height: verticalSpacing), // لتوفير مسافة بين الزر والنص
+              SizedBox(height: verticalSpacing), // مسافة بين الزر والنص
               Text(
                 _message,
                 style: TextStyle(
-                    fontSize: textSize * textScaleFactor,
-                    fontWeight: FontWeight.bold),
+                  fontSize: textSize * 0.8, // حجم النص أصغر بنسبة 80%
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
                 textAlign: TextAlign.center,
               ),
-              const Spacer(), // يضيف مساحة فارغة لدفع زر الرجوع إلى أسفل الصفحة
-              Padding(
-                padding: EdgeInsets.only(bottom: verticalSpacing),
-                child: ElevatedButton(
+              const Spacer(), // إضافة مساحة لدفع زر الرجوع للأسفل
+              // زر الرجوع
+              Container(
+                width: buttonWidth, // عرض الزر
+                height: buttonHeight, // ارتفاع الزر
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 192, 223, 156), // خلفية الزر
+                  borderRadius: BorderRadius.circular(8), // زوايا مستديرة
+                ),
+                child: TextButton.icon(
                   onPressed: _goBack,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(buttonWidth, 30),
+                  icon: const Icon(Icons.arrow_back,
+                      color:
+                          Color.fromARGB(255, 131, 131, 131)), // أيقونة الرجوع
+                  label: const Text(
+                    'Back',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color.fromARGB(
+                          255, 131, 131, 131), // لون النص للأزرار
+                    ),
                   ),
-                  child: const Text('Back', style: TextStyle(fontSize: 18)),
                 ),
               ),
             ],

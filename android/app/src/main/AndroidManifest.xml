@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
   <!-- الأذونات الخاصة بالجهاز -->
+  <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK" />
   <uses-feature android:name="android.hardware.type.watch" />
   
@@ -9,9 +10,9 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   
   <application
-      android:label="wear_os3"
+      android:label="My Baby’s Voice"
       android:name="${applicationName}"
-      android:icon="@mipmap/ic_launcher">
+      android:icon="@mipmap/launcher_icon">
       <activity
           android:name=".MainActivity"
           android:exported="true"
