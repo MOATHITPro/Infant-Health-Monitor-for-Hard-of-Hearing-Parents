@@ -1,3 +1,4 @@
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <FirebaseESP32.h>
@@ -9,18 +10,21 @@
 #define WIFI_PASSWORD "12345678"
 
 // بيانات Firebase
-#define API_KEY "AIzaSyDqf8zSPSB-fq0ZAc2Y7-ZVTInSJdJhgOU"
-#define DATABASE_URL "https://esp32projectv2-default-rtdb.firebaseio.com/"
-#define USER_EMAIL "moath.itpro@gmail.com"
-#define USER_PASSWORD "Moath770937324$"
+#define API_KEY "AIzaSyDHPCO59os2xnUkgSUIR1h1Fy3PgZPiyQI"
+#define DATABASE_URL "https://esp32-7c93b-default-rtdb.firebaseio.com/"
+#define USER_EMAIL "raghad.aba24@gmail.com"
+#define USER_PASSWORD "plmplmokn"
 
-//  Firebasex
+
+
+
+// Firebase
 FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 
 // إعدادات مستشعر الصوت
-#define SOUND_SENSOR_PIN 35 // الدبوس الذي يتصل به OUT من MAX4466
+#define SOUND_SENSOR_PIN 35 // الدبوس الذي يتصل به OUT من MAX9814
 const uint16_t samples = 64; // عدد العينات في كل دورة
 const float samplingFrequency = 1000; // تردد العينة (Hz)
 int sound_threshold = 91; // العتبة التي نعتبر عندها أن الطفل يبكي
@@ -31,6 +35,10 @@ float vImag[samples];
 
 // كائن FFT
 ArduinoFFT FFT = ArduinoFFT(vReal, vImag, samples, samplingFrequency);
+
+// متغير لتخزين الوقت الأخير الذي تم فيه الإرسال إلى Firebase
+unsigned long lastSendTime = 0; // الوقت الافتراضي صفر
+const unsigned long sendInterval = 60000; // مدة الانتظار بالدقائق (60,000ms = دقيقة واحدة)
 
 void setup() {
   Serial.begin(9600);
@@ -99,32 +107,30 @@ void loop() {
 
   // إذا تجاوز التردد الرئيسي العتبة، يتم اعتبار أن الطفل يبكي
   if (peakFrequency > sound_threshold) {
-    Serial.println("=> Your Baby Needs You");
+    Serial.println("=> Baby is crying");
 
-    // إرسال البيانات إلى Firebase
-    if (Firebase.ready()) {
-      String path = "/baby_status/crying";
-      if (Firebase.setString(fbdo, path, "Your Baby Needs You")) {
-        Serial.println("Status sent to Firebase: Your Baby Needs You");
-      } else {
-        Serial.println("Failed to send status: " + fbdo.errorReason());
+    // التحقق مما إذا كانت المدة المطلوبة قد مرت منذ الإرسال الأخير
+    unsigned long currentTime = millis();
+    if (currentTime - lastSendTime >= sendInterval) {
+      // تحديث الوقت الأخير
+      lastSendTime = currentTime;
+
+      // إرسال البيانات إلى Firebase
+      if (Firebase.ready()) {
+        String path = "/baby_status/crying";
+        if (Firebase.setString(fbdo, path, "Baby is crying")) {
+          Serial.println("Status sent to Firebase: Baby is crying");
+        } else {
+          Serial.println("Failed to send status: " + fbdo.errorReason());
+        }
       }
+    } else {
+      // إذا لم تمر دقيقة، لا يتم الإرسال، ويستمر التحليل
+      Serial.println("A cry detected, but waiting for the interval to pass before sending.");
     }
-  } 
-  
-  //else {
-  //  Serial.println("=> Noise detected");
+  }
 
-    // إرسال حالة أخرى إلى Firebase
-  //  if (Firebase.ready()) {
-    //  String path = "/baby_status/crying";
-    //  if (Firebase.setString(fbdo, path, "No crying detected")) {
-    //    Serial.println("Status sent to Firebase: No crying detected");
-    //  } else {
-    //    Serial.println("Failed to send status: " + fbdo.errorReason());
-    //  }
-   // }
- // }
-
+  // تأخير بسيط بين الدورات
   delay(300); // تأخير بين القراءات
+
 }
